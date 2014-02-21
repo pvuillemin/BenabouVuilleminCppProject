@@ -17,8 +17,11 @@ Gui::Gui(void):_font(NULL),_font2(NULL),_screen(800,600,32,"Images/background.pn
 	SDL_Color textColor={0,0,0};
 	_textColor= textColor;
 
-		//The number of arms
+		//The numbers
 	_numberArms = 0;
+	_simulationNumber = 0;
+	_initNumber = 0;
+
 	
 
 }
