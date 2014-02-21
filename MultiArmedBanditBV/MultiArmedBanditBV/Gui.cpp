@@ -21,7 +21,9 @@ Gui::Gui(void):_font(NULL),_font2(NULL),_screen(800,600,32,"Images/background.pn
 	_numberArms = 0;
 	_simulationNumber = 0;
 	_initNumber = 0;
-
+	_tau=0.5;
+	_beta=0.5;
+	_epsilon=0.5;
 	
 
 }
@@ -64,9 +66,25 @@ int Gui::GetSimulationNumber()
 return _simulationNumber;
 }
 
+double Gui::GetTau()
+{
+return _tau;
+}
+
+double Gui::GetEpsilon()
+{
+return _epsilon;
+}
+
+double Gui::GetBeta()
+{
+return _beta;
+}
+
+
 //Welcoming window
 void Gui::Welcome(void)
-{double a = 0;
+{
 	//Define the texts
 Texts welcome(0,150,_font,"Multi Armed Bandit",_textColor);
 Texts authors(0,350,_font2,"Nathan Benabou & Pierre Vuillemin",_textColor);
@@ -412,11 +430,15 @@ void Gui::SetSimulations()
 	//Create The TypeZone
 
 	TypeZone simNumber(0,350,_font2,"Number of simulation",_textColor);
-	TypeZone initNumber(0,450,_font2,"Number of initialization",_textColor);
+	TypeZone initNumber(0,400,_font2,"Number of initialization",_textColor);
+	TypeZone beta(0,450,_font2,"Beta",_textColor);
+	TypeZone tau(0,480,_font2,"Tau",_textColor);
+	TypeZone epsilon(0,510,_font2,"Epsilon",_textColor);
+
 
 	//Create the button
 
-	Buttons generateData(361,500,"Images/data1.png","Images/data2.png","Images/data3.png");
+	Buttons generateData(361,570,"Images/data1.png","Images/data2.png","Images/data3.png");
 
 
 	//Display them all
@@ -425,7 +447,9 @@ void Gui::SetSimulations()
 	generateData.Show(_screen);
 	simNumber.DisplayCentered(_screen,_simulationNumber,_font2,_textColor);
 	initNumber.DisplayCentered(_screen,_initNumber,_font2,_textColor);
-
+	beta.DisplayCentered(_screen,_beta,_font2,_textColor);
+	tau.DisplayCentered(_screen,_tau,_font2,_textColor);
+	epsilon.DisplayCentered(_screen,_epsilon,_font2,_textColor);
 
 	//Initialize the event structure
 	SDL_Event event;
@@ -440,6 +464,9 @@ void Gui::SetSimulations()
 				//modify the number of arms
 				simNumber.HandleEvents(event,_simulationNumber);
 				initNumber.HandleEvents(event,_initNumber);
+				beta.HandleEvents(event,_beta);
+				tau.HandleEvents(event,_tau);
+				epsilon.HandleEvents(event,_epsilon);
 				//If it's okay then skip to the following window
 				if(generateData.HandleEvents(event)==false)
 				{
@@ -456,20 +483,91 @@ void Gui::SetSimulations()
 
 	simNumber.DisplayCentered(_screen,_simulationNumber,_font2,_textColor);	
 	initNumber.DisplayCentered(_screen,_initNumber,_font2,_textColor);
+	beta.DisplayCentered(_screen,_beta,_font2,_textColor);
+	tau.DisplayCentered(_screen,_tau,_font2,_textColor);
+	epsilon.DisplayCentered(_screen,_epsilon,_font2,_textColor);
 	generateData.Show(_screen);	
 	_screen.Display();
 	}
 	
 _screen.Clean("Images/background.png");
-
-
-
-
-
-
-
-
 }
+
+/*void Gui::SetMode()
+{
+	//Define the texts
+Texts setMode(0,150,_font,"Mode",_textColor);
+Texts instructions(0,250,_font2,"Play or use implemented strategies",_textColor);
+
+
+	//Define the Button
+Buttons enter(361, 500, "Images/enter1.png","Images/enter2.png","Images/enter3.png");
+
+
+
+//Radiobuttons to choose the type of arm (exponential, uniform real, uniform int, poisson, logNormal)
+	RadioButtons solo(100,300,"Solo",_font2,_textColor);
+	RadioButtons strat(solo.GetBox().x+solo.GetBox().w+20,300,"Implemented strategies",_font2,_textColor);
+	
+
+	//Calculate the x for centering them (width of the screen minus the sum the width of the buttons)
+
+	int xCentered = ((*(_screen.GetScreen())).clip_rect.w-solo.GetBox().w-20)/2;
+
+	//Relocate the buttons
+
+	solo.SetPosition(xCentered,solo.GetBox().y);
+	strat.SetPosition(solo.GetBox().x+solo.GetBox().w+20,strat.GetBox().y);
+	
+
+	//Display them all
+	
+	
+	
+	solo.Show(_screen);
+	strat.Show(_screen);	
+
+  //Display them centered
+	setMode.DisplayCentered(_screen);
+	instructions.DisplayCentered(_screen);
+	enter.Show(_screen);
+
+//Start getting events
+SDL_Event event;
+
+//Initialization of the loop
+
+bool skip = false;
+while((_quit==false)&&(skip==false))
+	{	//While there's an event to handle
+		while( SDL_PollEvent( &event ) )
+			{	
+
+
+				if(enter.HandleEvents(event)==false)
+				{
+				skip=true;
+				}
+
+				
+				
+				//If the user has Xed out the window
+				if( event.type == SDL_QUIT )
+					{
+					//Quit the program
+					_quit = true;
+					}
+			}
+	
+	enter.Show(_screen);	
+	_screen.Display();
+	}
+	
+_screen.Clean("Images/background.png");
+
+}*/
+
+
 
 
 

@@ -12,17 +12,24 @@ class Gui
 public:
 	Gui(void);
 	~Gui(void);
+
+	//Getters
 	int GetArmNumber();
 	std::vector<char> GetChoices();
 	std::vector<std::vector<double>> GetParameters();
 	int GetSimulationNumber();
 	int GetInitNumber();
+	double GetTau();
+	double GetBeta();
+	double GetEpsilon();
 
 	void Welcome(void);// First window welcoming the user
 	void ChooseArmNumber();// Get the number of arms
 	void SetArm(const char* text);//Set one arm
 	void SetArms();//Set the arms
-	void SetSimulations();//Set th parametres of the simulation (number of initializing try and then number of try)
+	//void SetMode();//choose the mode
+	void SetSimulations();//Set the parametres of the simulation (number of initializing try and then number of try)
+	
 private:
 	//Boolean for closing the program
 
@@ -51,6 +58,12 @@ private:
 	//Vector containing the differents kinds of arms wich will be chosen by he user
 	std::vector<char> _choices;
 	std::vector<std::vector<double>> _parameters;
+
+	//parameters for the strategy
+
+	double _epsilon;// parametre de epsilon greedy strategy
+	double _tau;//  parametre de boltzmann exploration strategy
+	double _beta;// parametre de pursuit strategy
 
 
 };
