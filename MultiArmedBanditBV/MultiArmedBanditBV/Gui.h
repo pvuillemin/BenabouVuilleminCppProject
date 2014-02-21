@@ -22,7 +22,7 @@ public:
 	void ChooseArmNumber();// Get the number of arms
 	void SetArm(const char* text);//Set one arm
 	void SetArms();//Set the arms
-	void SetSimulations();
+	void SetSimulations();//Set th parametres of the simulation (number of initializing try and then number of try)
 private:
 	//Boolean for closing the program
 
