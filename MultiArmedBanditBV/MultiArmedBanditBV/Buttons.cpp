@@ -102,7 +102,7 @@ bool Buttons::HandleEvents(SDL_Event event )
 			 //If the mouse is over the button 
 			 if( ( x > _box.x ) && ( x < _box.x + _box.w ) && ( y > _box.y ) && ( y < _box.y + _box.h ) ) 
 				{ 
-				_activeImage = _pushImage;
+				_activeImage = _pushImage;//change the image
 				} 
 			} 
 		}

@@ -7,7 +7,7 @@ public:
 	~Screens(void);
 	void Display(); // Displaying the Screen
 	SDL_Surface* GetScreen(void); //a getter because the screen will be used for displaynig things
-	void Screens::Clean(std::string fileName); //cleaning the screen repainting it with the background
+	void Screens::Clean(std::string fileName); //cleaning the screen repainting it with the background (erasing all the blitted objects)
 private:
 	// The dimensions
 	int _screenWidth;

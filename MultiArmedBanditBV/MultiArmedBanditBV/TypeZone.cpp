@@ -102,17 +102,18 @@ void TypeZone::DisplayRight(Screens screen, double& a, TTF_Font* font, SDL_Color
 
 void TypeZone::HandleEvents(SDL_Event event, double& a)
 {
-//Setting th mouse offset
+//Setting the mouse offset
 	int x = 0;
 	int y = 0;
 
 		if( (event.type == SDL_KEYDOWN)&&_isActive )
 		{
+		//For the numbers before the period
 		 if(_pointPosition==0)
 		 {
 
 			switch( event.key.keysym.sym )
-				{
+				{//we add a number
 				case SDLK_COMMA:_pointPosition=1;break;
 				case SDLK_0:a=10*a;break;
 				case SDLK_1:a=10*a+1;break;
@@ -124,13 +125,15 @@ void TypeZone::HandleEvents(SDL_Event event, double& a)
 				case SDLK_7:a=10*a+7;break;
 				case SDLK_8:a=10*a+8;break;
 				case SDLK_9:a=10*a+9;break;	
+
+				//Or we delete the last one
 				case SDLK_BACKSPACE:a=(a-10*((a/10)-(floor(a/10))))/10;
 				}
 		 }
 		 else
-		 {
+		 {//For the numbers after the period
 		 switch( event.key.keysym.sym )
-				{
+				{//pointPosition allows to know where is the point and then adding the number
 				case SDLK_0:_pointPosition++;break;
 				case SDLK_1:a+=1*pow(10.0,-_pointPosition); _pointPosition++;break;
 				case SDLK_2:a+=2*pow(10.0,-_pointPosition); _pointPosition++;break;
@@ -142,12 +145,15 @@ void TypeZone::HandleEvents(SDL_Event event, double& a)
 				case SDLK_8:a+=8*pow(10.0,-_pointPosition); _pointPosition++;break;
 				case SDLK_9:a+=9*pow(10.0,-_pointPosition); _pointPosition++;break;	
 				case SDLK_BACKSPACE:
+					//if there is just the point 
 					if(_pointPosition==1)
 					{
+						//we just decrement the position
 					_pointPosition--;
 					}
 					else
 					{
+					//we delete the last number
 					double d=pow(10.0,_pointPosition-2);
 					a=floor(a*d)/d;_pointPosition--;
 					}

@@ -5,10 +5,10 @@ Screens::Screens(int screenWidth, int screenHeight, int screenBPP, std::string f
 {
 
 	//assignment of the attributes
-	_screenWidth = screenWidth ;
-	_screenHeight = screenHeight ;
-	_screenBPP = screenBPP;
-	_fileName = fileName;
+	_screenWidth = screenWidth ;//the width of the screen
+	_screenHeight = screenHeight ;//its height
+	_screenBPP = screenBPP;//and the number of bytes per point
+	_fileName = fileName;//link for the backrgound image
 	
 	//initialization of the screen
 	SDL_Surface* screenBackground =NULL;
@@ -16,7 +16,7 @@ Screens::Screens(int screenWidth, int screenHeight, int screenBPP, std::string f
 	SDL_WM_SetCaption( "Multi Armed Bandit", NULL );//we name the window
 	screenBackground = LoadImage(fileName);// We load the wallpaper
 	ApplySurface(0,0,screenBackground,_screen);//we blit the wallpaper to the window
-	SDL_FreeSurface(screenBackground);
+	SDL_FreeSurface(screenBackground);//Once it's blitted we delete the SDL8surface avoiding memory leak
 
 }
 
@@ -42,7 +42,7 @@ return _screen ;
 void Screens::Clean(std::string fileName)
 {	SDL_Surface* screenBackground =NULL;
 	screenBackground = LoadImage(fileName);// We load the wallpaper
-	ApplySurface(0,0,screenBackground,_screen);//we blit the wallpaper to the window
+	ApplySurface(0,0,screenBackground,_screen);//we blit the wallpaper to the window the other objects are then covered
 	SDL_FreeSurface(screenBackground);
 }
 
