@@ -33,6 +33,12 @@ int Texts::GetWidth()
 {
 return _box.w;
 }
+
+void Texts::SetPosition(int x,int y)
+{
+_box.x=x;
+_box.y=y;
+}
 void Texts::Display(Screens screen)
 {
 	ApplySurface(_box.x,_box.y,_message,screen.GetScreen());

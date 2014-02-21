@@ -38,7 +38,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LinkIncremental>true</LinkIncremental>
+    <LinkIncremental>false</LinkIncremental>
     <IncludePath>SDL-1.2.15\include;$(IncludePath)</IncludePath>
     <LibraryPath>SDL-1.2.15\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
@@ -92,6 +92,7 @@
     <ClCompile Include="RadioButtons.cpp" />
     <ClCompile Include="Screens.cpp" />
     <ClCompile Include="Texts.cpp" />
+    <ClCompile Include="TypeZone.cpp" />
     <ClCompile Include="UniformInt.cpp" />
     <ClCompile Include="UniformReal.cpp" />
     <ClCompile Include="UpButton.cpp" />
@@ -110,6 +111,7 @@
     <ClInclude Include="RadioButtons.h" />
     <ClInclude Include="Screens.h" />
     <ClInclude Include="Texts.h" />
+    <ClInclude Include="TypeZone.h" />
     <ClInclude Include="UniformInt.h" />
     <ClInclude Include="UniformReal.h" />
     <ClInclude Include="UpButton.h" />

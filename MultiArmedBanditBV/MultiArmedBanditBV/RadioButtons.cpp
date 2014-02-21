@@ -23,6 +23,14 @@ RadioButtons::~RadioButtons(void)
 {
 }
 
+void RadioButtons::SetPosition(int x, int y)
+{
+_box.x=x;
+_box.y=y;
+
+_text.SetPosition(x+_box.h+2,y-2);
+}
+
 void RadioButtons::Show(Screens screen)
 {
 	//We display the text and the button itself

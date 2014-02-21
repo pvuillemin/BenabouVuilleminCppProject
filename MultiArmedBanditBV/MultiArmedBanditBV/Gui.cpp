@@ -1,5 +1,5 @@
 #include "Gui.h"
-
+#include "TypeZone.h"
 
 Gui::Gui(void):_font(NULL),_font2(NULL),_screen(800,600,32,"Images/background.png")
 {	
@@ -51,18 +51,31 @@ std::vector<std::vector<double>> Gui::GetParameters()
 return _parameters;
 }
 
+int Gui::GetInitNumber()
+{
+return _initNumber;
+}
+
+int Gui::GetSimulationNumber()
+{
+return _simulationNumber;
+}
+
 //Welcoming window
 void Gui::Welcome(void)
-{
+{double a = 0;
 	//Define the texts
 Texts welcome(0,150,_font,"Multi Armed Bandit",_textColor);
 Texts authors(0,350,_font2,"Nathan Benabou & Pierre Vuillemin",_textColor);
+
+
 	//Define the Button
 Buttons enter(361, 500, "Images/enter1.png","Images/enter2.png","Images/enter3.png");
   //Display them centered
 welcome.DisplayCentered(_screen);
+
 authors.DisplayCentered(_screen);
-enter.Show(_screen);
+//enter.Show(_screen);
 
 //Start getting events
 SDL_Event event;
@@ -73,11 +86,13 @@ bool skip = false;
 while((_quit==false)&&(skip==false))
 	{	//While there's an event to handle
 		while( SDL_PollEvent( &event ) )
-			{
+			{	
 				if(enter.HandleEvents(event)==false)
 				{
 				skip=true;
 				}
+
+				
 				
 				//If the user has Xed out the window
 				if( event.type == SDL_QUIT )
@@ -86,7 +101,7 @@ while((_quit==false)&&(skip==false))
 					_quit = true;
 					}
 			}
-
+	
 	enter.Show(_screen);	
 	_screen.Display();
 	}
@@ -98,21 +113,21 @@ _screen.Clean("Images/background.png");
 void Gui::ChooseArmNumber()
 {	
 	// Initializing the texts 
-	Texts chooseArmNumber(0,150,_font,"Choose the number of arms",_textColor);
-	Texts armNumber(200,250,_font2,"Number of arms",_textColor);
-
+	Texts chooseArmNumber(0,100,_font,"Choose the number of arms",_textColor);
+	
 	//Initializing the Buttons
 
 	Buttons ok(361,450, "Images/ok1.png", "Images/ok2.png","Images/ok3.png");
-	UpButton up(350+armNumber.GetWidth()+1, 250);
-	DownButton down(350+armNumber.GetWidth()+1, 259);
+	UpButton up(350, 250, _font2,"Number of arms",_textColor);
+	DownButton down(350, 259);
 
 	//Display all of them
 
 	chooseArmNumber.DisplayCentered(_screen);
-	armNumber.Display(_screen);
+	
 	ok.Show(_screen);
-	up.Show(_screen,_numberArms,_font2,_textColor);
+	up.DisplayCentered(_screen,_numberArms,_font2,_textColor);
+	down.SetPosition(up.GetBox().x,up.GetBox().y+up.GetBox().h);
 	down.Show(_screen);
 
 	//Initialize the event structure
@@ -142,7 +157,7 @@ void Gui::ChooseArmNumber()
 					}
 			}
 
-	up.Show(_screen,_numberArms,_font2,_textColor);
+	up.DisplayCentered(_screen,_numberArms,_font2,_textColor);	
 	down.Show(_screen);
 	ok.Show(_screen);	
 	_screen.Display();
@@ -161,26 +176,22 @@ void Gui::SetArm(const char* text)
 
 	//The variables that the window is going to get
 
-	int mean =1;//the mean of the arm
-	int variance =1;//its variance
+	double mean =0;//the mean of the arm
+	double variance =0;//its variance
 	char armType ='A';//its type
 
 	//Initializing the texts
-	Texts arm(0,150,_font,text,_textColor);
-	Texts meanT(100,400,_font2,"Mean",_textColor);
-	Texts varianceT(400,400, _font2,"Variance",_textColor);
-
+	Texts arm(0,150,_font,text,_textColor);	
+	Texts instructions(0,250,_font2,"Choose a type of arm then click in the boxes and type the parameters",_textColor);
 	//Initializing the buttons
 
 	//Ok button to skip to the next window
 	Buttons ok(361,500, "Images/ok1.png", "Images/ok2.png","Images/ok3.png");
 
-	//Up and down button to set the mean
-	UpButton meanUp(300,400);
-	DownButton meanDown(300,409);
-	//Up and down button to set the variance
-	UpButton varianceUp(600,400);
-	DownButton varianceDown(600,409);
+	//Type zones for the mean and the variance
+	TypeZone meanT(300,400,_font2,"Mean",_textColor);	
+	TypeZone varianceT(600,400,_font2,"Variance",_textColor);
+	
 
 	//Radiobuttons to choose the type of arm (exponential, uniform real, uniform int, poisson, logNormal)
 	RadioButtons exp(100,300,"Exponential",_font2,_textColor);
@@ -189,13 +200,25 @@ void Gui::SetArm(const char* text)
 	RadioButtons poisson(unifi.GetBox().x+unifi.GetBox().w+20,300,"Poisson",_font2,_textColor);
 	RadioButtons logNormal(poisson.GetBox().x+poisson.GetBox().w+20,300,"Log-normal",_font2,_textColor);
 
+	//Calculate the x for centering them (width of the screen minus the sum the width of the buttons)
+
+	int xCentered = ((*(_screen.GetScreen())).clip_rect.w-exp.GetBox().w-unifr.GetBox().w-unifi.GetBox().w-poisson.GetBox().w-logNormal.GetBox().w-80)/2;
+
+	//Relocate the buttons
+
+	exp.SetPosition(xCentered,exp.GetBox().y);
+	unifr.SetPosition(exp.GetBox().x+exp.GetBox().w+20,unifr.GetBox().y);
+	unifi.SetPosition(unifr.GetBox().x+unifr.GetBox().w+20,unifi.GetBox().y);
+	poisson.SetPosition(unifi.GetBox().x+unifi.GetBox().w+20,poisson.GetBox().y);
+	logNormal.SetPosition(poisson.GetBox().x+poisson.GetBox().w+20,logNormal.GetBox().y);
+
 	//Display them all
 
 	arm.DisplayCentered(_screen);
-	meanT.Display(_screen);
+	instructions.DisplayCentered(_screen);
+	//meanT.Display(_screen);
 
-	SDL_Color red={64,0,0};
-	exp.SetColor(red);
+	
 	
 	ok.Show(_screen);
 	exp.Show(_screen);
@@ -204,10 +227,11 @@ void Gui::SetArm(const char* text)
 	poisson.Show(_screen);
 	logNormal.Show(_screen);
 
-	meanDown.Show(_screen);
-	meanUp.Show(_screen,mean, _font2,_textColor);
-	varianceDown.Show(_screen);
-
+	
+	meanT.DisplayLeft(_screen,mean,_font2,_textColor);
+	varianceT.DisplayRight(_screen,mean,_font2,_textColor);
+	
+	
 	
 		//Initialize the event structure
 	SDL_Event event;
@@ -227,14 +251,14 @@ void Gui::SetArm(const char* text)
 				poisson.HandleEvents(event);
 				logNormal.HandleEvents(event);
 
-				meanUp.HandleEvents(event,mean);
-				meanDown.HandleEvents(event,mean);
+				meanT.HandleEvents(event,mean);
+				
 				
 				//For some button we just need the mean to set the distribution so in this case we hide the variance
 				if((exp.IsActive()==false)&&(poisson.IsActive()==false))
 				{				
-				varianceUp.HandleEvents(event,variance);
-				varianceDown.HandleEvents(event,variance);
+				varianceT.HandleEvents(event,variance);
+				
 				}
 				//we check if one option was chosen
 				isChoiceCorrect = (exp.IsActive()|| unifr.IsActive()||unifi.IsActive()||poisson.IsActive()||logNormal.IsActive());
@@ -273,15 +297,14 @@ void Gui::SetArm(const char* text)
 		poisson.Show(_screen);
 		logNormal.Show(_screen);
 	
-		meanUp.Show(_screen,mean, _font2,_textColor);
-		meanDown.Show(_screen);
+		meanT.DisplayLeft(_screen,mean, _font2,_textColor);
+		
 		
 		//For some button we just need the mean to set the distribution so in this case we hide the variance
 		if((exp.IsActive()==false)&&(poisson.IsActive()==false))
 			{
-			 varianceT.Display(_screen);
-			 varianceUp.Show(_screen,variance, _font2,_textColor);
-			 varianceDown.Show(_screen);
+			 varianceT.DisplayRight(_screen,variance, _font2,_textColor);	
+			 
 			}
 		else
 			{
@@ -375,6 +398,74 @@ for(int i = 1 ; i< _numberArms+1 ; i++)
 	strcat(str,strm.str().c_str());
 	Gui::SetArm(str);
 	}
+}
+
+void Gui::SetSimulations()
+{
+	//Create the texts
+	Texts set(0,150,_font,"Set the simulation",_textColor);
+	Texts instructions(0,250,_font2,"Click in the boxes and type the parameters",_textColor);
+
+	//Create The TypeZone
+
+	TypeZone simNumber(0,350,_font2,"Number of simulation",_textColor);
+	TypeZone initNumber(0,450,_font2,"Number of initialization",_textColor);
+
+	//Create the button
+
+	Buttons generateData(361,500,"Images/data1.png","Images/data2.png","Images/data3.png");
+
+
+	//Display them all
+	set.DisplayCentered(_screen);
+	instructions.DisplayCentered(_screen);
+	generateData.Show(_screen);
+	simNumber.DisplayCentered(_screen,_simulationNumber,_font2,_textColor);
+	initNumber.DisplayCentered(_screen,_initNumber,_font2,_textColor);
+
+
+	//Initialize the event structure
+	SDL_Event event;
+
+	//Initialization of the loop
+	
+	bool skip=false;
+	while((skip==false)&&(_quit==false))
+	{	//While there's an event to handle
+		while( SDL_PollEvent( &event ) )
+			{	
+				//modify the number of arms
+				simNumber.HandleEvents(event,_simulationNumber);
+				initNumber.HandleEvents(event,_initNumber);
+				//If it's okay then skip to the following window
+				if(generateData.HandleEvents(event)==false)
+				{
+				skip=true;
+				}
+				
+				//If the user has Xed out the window
+				if( event.type == SDL_QUIT )
+					{
+					//Quit the program
+					_quit = true;
+					}
+			}
+
+	simNumber.DisplayCentered(_screen,_simulationNumber,_font2,_textColor);	
+	initNumber.DisplayCentered(_screen,_initNumber,_font2,_textColor);
+	generateData.Show(_screen);	
+	_screen.Display();
+	}
+	
+_screen.Clean("Images/background.png");
+
+
+
+
+
+
+
+
 }
 
 

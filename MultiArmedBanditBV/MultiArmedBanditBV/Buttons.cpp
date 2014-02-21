@@ -27,7 +27,11 @@ Buttons::~Buttons(void)
 	SDL_FreeSurface(_pushImage);
 	
 }
-
+void Buttons::SetPosition(int x, int y)
+{
+_box.x=x;
+_box.y=y;
+}
 void Buttons::SetActiveImage(SDL_Surface* image)
 {
 	_activeImage = image; 
@@ -47,6 +51,7 @@ SDL_Surface* Buttons::GetPushImage(void)
 	return _pushImage;
 }
 
+
 SDL_Rect Buttons::GetBox()
 {
 return _box;
@@ -58,6 +63,14 @@ bool Buttons::HandleEvents(SDL_Event event )
 	int x = 0;
 	int y = 0;
 
+	if( event.type == SDL_KEYDOWN )
+		{
+		switch( event.key.keysym.sym )
+			{
+			case SDLK_RETURN:return false;	
+			
+			}
+		}
 	 //If the mouse moved
 	if( event.type == SDL_MOUSEMOTION ) 
 		{

@@ -6,7 +6,9 @@ class Buttons
 public:
 	Buttons(int x, int y, std::string outImageFile, std::string inImageFile, std::string pushImageFile );
 	~Buttons(void);
+	//Setter for the position
 
+	void Buttons::SetPosition(int x, int y);
 	// Diplaying the button
 	void Show(Screens screen) const;
 

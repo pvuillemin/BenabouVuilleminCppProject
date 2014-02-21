@@ -6,9 +6,11 @@ class Texts
 public:
 	Texts(int x, int y, TTF_Font* font, const char* text, SDL_Color textColor);
 	~Texts(void);
+
+	void SetPosition(int x,int y);
 	//Function displaying the message
 	void Display(Screens screen);
-
+	
 	//Getters for the dimesions
 	int GetHeight(void);
 	int GetWidth(void);

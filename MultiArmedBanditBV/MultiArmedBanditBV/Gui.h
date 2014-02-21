@@ -15,11 +15,14 @@ public:
 	int GetArmNumber();
 	std::vector<char> GetChoices();
 	std::vector<std::vector<double>> GetParameters();
+	int GetSimulationNumber();
+	int GetInitNumber();
 
 	void Welcome(void);// First window welcoming the user
 	void ChooseArmNumber();// Get the number of arms
 	void SetArm(const char* text);//Set one arm
 	void SetArms();//Set the arms
+	void SetSimulations();
 private:
 	//Boolean for closing the program
 
@@ -38,6 +41,12 @@ private:
 
 	// The number of arms
 	int _numberArms;
+
+	//The number of try simulated
+	double _simulationNumber;
+
+	//The number of try for the initialization
+	double _initNumber;
 
 	//Vector containing the differents kinds of arms wich will be chosen by he user
 	std::vector<char> _choices;
